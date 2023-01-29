@@ -1,4 +1,5 @@
 import random
+import sys
 
 
 def display_data(hash):
@@ -29,22 +30,33 @@ def get_avg(hash):
         sum(hash["unbreaking_III"]["data"]) / len(hash["unbreaking_III"]["data"])), 0)
 
 
-def get_probability_data(sample_size):
+def get_probability_data():
+    sample_size = int(input("Sample size: "))
+    pickaxe_type = input(
+        "Pickaxe type: ['wood', 'stone', 'iron', 'gold', 'diamond', 'netherite']\n").lower()
+
+    base_stats = {"wood": 60, "stone": 132, "iron": 251,
+                  "gold": 33, "diamond": 1562, "netherite": 2032}
+
+    print("pickaxe type: ", pickaxe_type)
+    if pickaxe_type in base_stats:
+        base = base_stats[pickaxe_type]
+    else:
+        sys.exit("Error: not a valid pickaxe type.")
 
     hash = {"unbreaking_I": {"avg": [], "data": []}, "unbreaking_II": {
         "avg": [], "data": []}, "unbreaking_III": {"avg": [], "data": []}}
 
     for _ in range(sample_size):
-        get_unbreaking_I_data(hash)
-        get_unbreaking_II_data(hash)
-        get_unbreaking_III_data(hash)
+        get_unbreaking_I_data(hash, base)
+        get_unbreaking_II_data(hash, base)
+        get_unbreaking_III_data(hash, base)
 
     get_avg(hash)
     return hash
 
 
-def get_unbreaking_I_data(hash):
-    base = 132
+def get_unbreaking_I_data(hash, base):
     counter = 0
     while base > 0:
         probability = random.randrange(2)
@@ -57,8 +69,7 @@ def get_unbreaking_I_data(hash):
     return hash
 
 
-def get_unbreaking_II_data(hash):
-    base = 132
+def get_unbreaking_II_data(hash, base):
     counter = 0
     while base > 0:
         probability = random.randrange(3)
@@ -71,8 +82,7 @@ def get_unbreaking_II_data(hash):
     return hash
 
 
-def get_unbreaking_III_data(hash):
-    base = 132
+def get_unbreaking_III_data(hash, base):
     counter = 0
     while base > 0:
         probability = random.randrange(4)
@@ -86,7 +96,6 @@ def get_unbreaking_III_data(hash):
 
 
 if __name__ == "__main__":
-    sample_size = int(input("Sample size: "))
 
-    hash = get_probability_data(sample_size)
+    hash = get_probability_data()
     display_data(hash)
